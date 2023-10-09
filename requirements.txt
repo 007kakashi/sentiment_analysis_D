@@ -1,0 +1,11 @@
+nltk
+pandas
+numpy
+seaborn
+wordcloud
+streamlit
+tensorflow
+pickle4
+scikit-learn
+keras
+regex
