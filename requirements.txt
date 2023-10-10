@@ -9,3 +9,4 @@ pickle4
 scikit-learn
 keras
 regex
+xgboost

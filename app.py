@@ -6,7 +6,7 @@ This is a temporary script file.
 """
 import pandas as pd
 import numpy as np
-# import pickle 
+import pickle 
 import streamlit as st
 from tensorflow import keras
 from keras.preprocessing.text import Tokenizer
@@ -20,26 +20,36 @@ from numpy import loadtxt
 from keras.models import load_model
 
 # load model
-classifier = load_model('model.h5')
+# classifier = load_model('model.h5')
 
 open 
 
-# filenametoken = 'model.pkl'
-# token = pickle.load(open(filenametoken, 'rb'))
+filenametoken = 'model.pkl'
+classifier = pickle.load(open(filenametoken, 'rb'))
 
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+# def clean(text):
+#     text = re.sub(r'[^\w\s]', '', text)
+#     text = re.sub(r'http\S+', '', text)
+#     text = text.lower()
+#     text = re.sub(r'\d+', '', text)
+#     text = ''.join([i for i in text if i.isalpha() or i.isspace()])
+#     tokens = nltk.word_tokenize(text)
+#     lemma= WordNetLemmatizer()
+#     tokens = [lemma.lemmatize(i) for i in tokens if not i in stopwords.words('english')]
+#     text = ' '.join(tokens)
+#     print(text)
+
+#     return text
+
+with open('cleaner.pkl','rb') as file:
+    cleaner=pickle.load(file)
 
 def predict(text):
-    text = re.sub(r'[^\w\s]', '', text)
-    text = re.sub(r'http\S+', '', text)
-    text = text.lower()
-    text = re.sub(r'\d+', '', text)
-    text = ''.join([i for i in text if i.isalpha() or i.isspace()])
-    tokens = nltk.word_tokenize(text)
-    lemma= WordNetLemmatizer()
-    tokens = [lemma.lemmatize(i) for i in tokens if not i in stopwords.words('english')]
-    text = ' '.join(tokens)
-    print(text)
-    Class = classifier.predict(text,batch_size=1,verbose = 2)[0]
+    Class = classifier.predict(text,batch_size=1,verbose = 2)
     print(Class)
     y_predicted = Class.flatten()
     print(y_predicted)
@@ -65,7 +75,11 @@ def main():
     
       result=""
       if st.button("Predict"):
-          result=predict(Sentence)
+          cleaning=cleaner(Sentence)
+
+          result=predict(cleaning)
+
+
       st.success('{}'.format(result))
       
 if __name__=='__main__':
