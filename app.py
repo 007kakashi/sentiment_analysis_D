@@ -63,7 +63,7 @@ def predict(text):
         return "Figurative"
     
 
-def main():
+def execute():
 
   add_selectbox = st.selectbox("How would you like to predict?",("Sentence", "Batch File"))
 
@@ -77,13 +77,15 @@ def main():
       if st.button("Predict"):
           cleaning=cleaner(Sentence)
 
-          result=predict(cleaning)
+          vc =  CountVectorizer(ngram_range=(1,1))
+          x = vc.fit_transform(cleaning).toarray()
+
+          result=predict(x)
+          
 
 
       st.success('{}'.format(result))
       
-if __name__=='__main__':
-    main()
 
 
 
